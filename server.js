@@ -4,7 +4,7 @@ import { createServer } from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { initializeDatabase, initTestData, getAllPrices, addPriceRecord } from './database.js';
+import { initializeDatabase, initTestData, getAllPrices, addPriceRecord, deletePriceRecord } from './database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,7 +31,8 @@ async function startServer() {
   // API Routes
   app.get('/api/prices', async (req, res) => {
     try {
-      const prices = await getAllPrices();
+      const search = req.query.search || '';
+      const prices = await getAllPrices(search);
       res.json(prices);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -48,6 +49,16 @@ async function startServer() {
 
       await addPriceRecord(record_date, item_name, price);
       res.json({ message: 'Record added successfully' });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete('/api/prices/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      await deletePriceRecord(id);
+      res.json({ message: 'Record deleted successfully' });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

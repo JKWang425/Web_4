@@ -24,9 +24,15 @@ export async function initializeDatabase() {
   return database;
 }
 
-export async function getAllPrices() {
+export async function getAllPrices(keyword = '') {
   if (!db) {
     throw new Error('Database not initialized');
+  }
+  if (keyword) {
+    return await db.all(
+      'SELECT * FROM price_history WHERE item_name LIKE ? OR record_date LIKE ? ORDER BY record_date DESC',
+      [`%${keyword}%`, `%${keyword}%`]
+    ) || [];
   }
   const stmt = await db.all('SELECT * FROM price_history ORDER BY record_date DESC');
   return stmt || [];
@@ -40,6 +46,13 @@ export async function addPriceRecord(recordDate, itemName, price) {
     `INSERT INTO price_history (record_date, item_name, price) VALUES (?, ?, ?)`,
     [recordDate, itemName, price]
   );
+}
+
+export async function deletePriceRecord(id) {
+  if (!db) {
+    throw new Error('Database not initialized');
+  }
+  await db.run('DELETE FROM price_history WHERE id = ?', [id]);
 }
 
 export async function initTestData() {
