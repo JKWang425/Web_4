@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CITY CAFE 價格觀測站</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CITY CAFE 價格觀測站</h1>
+            <p>追蹤 7-11 CITY CAFE 商品價格變化，觀察物價波動趨勢</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <h2>新增價格紀錄</h2>
+                <form id="priceForm">
+                    <div class="form-group">
+                        <label for="date">日期：</label>
+                        <input type="date" id="date" name="record_date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">商品名稱：</label>
+                        <input type="text" id="name" name="item_name" 
+                               placeholder="例如：大杯美式、中杯拿鐵、燕麥奶拿鐵" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">價格（元）：</label>
+                        <input type="number" id="price" name="price" 
+                               min="1" placeholder="輸入價格數字" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">新增紀錄</button>
+                </form>
+            </section>
+
+            <section class="history-section">
+                <h2>歷史價格紀錄</h2>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>紀錄日期</th>
+                            <th>品項名稱</th>
+                            <th>價格</th>
+                        </tr>
+                    </thead>
+                    <tbody id="priceHistoryBody">
+                        <!-- 歷史紀錄將在此處渲染 -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 CITY CAFE 價格觀測站 | 本網頁僅供學習用途</p>
+        </footer>
+    </div>
+
+    <script src="/javascripts/app.js"></script>
+</body>
+</html>
