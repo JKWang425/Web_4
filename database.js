@@ -1,11 +1,19 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
+import fs from 'fs';
+import path from 'path';
 
 let db;
 
 export async function initializeDatabase() {
+  const isAzure = !!process.env.WEBSITE_SITE_NAME;
+  const dataDir = isAzure ? '/home/data' : '.';
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
   const database = await open({
-    filename: './database.db',
+    filename: path.join(dataDir, 'database.db'),
     driver: sqlite3.Database,
   });
 
@@ -59,23 +67,23 @@ export async function initTestData() {
   const testRecords = [
     {
       record_date: '2024-01-15',
-      item_name: '大杯美式',
-      price: 35
+      item_name: '特選美式咖啡大杯',
+      price: 55
     },
     {
       record_date: '2024-06-20',
-      item_name: '中杯拿鐵',
-      price: 40
+      item_name: '特選拿鐵大杯',
+      price: 65
     },
     {
       record_date: '2024-12-01',
-      item_name: '大杯美式',
-      price: 38
+      item_name: '精品美式中杯',
+      price: 80
     },
     {
       record_date: '2025-01-10',
-      item_name: '燕麥奶拿鐵',
-      price: 55
+      item_name: '精品拿鐵大杯',
+      price: 110
     }
   ];
 
